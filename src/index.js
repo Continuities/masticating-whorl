@@ -1,20 +1,22 @@
-const video = document.getElementById('video');
-
-video.addEventListener('loadeddata', () => {
-  if (video.readyState >= 1) {
-    video.currentTime = Math.random() * video.duration;
-  }
+const player = new Vimeo.Player('video', {
+  // url: 'https://vimeo.com/665354372?h=56650862bd'
+  url: 'https://vimeo.com/717945664',
+  controls: false,
+  loop: true
 });
 
-video.addEventListener('click', () => {
-  if (video.paused){
-    video.play();
+(async () => {
+  const duration = await player.getDuration();
+  player.setCurrentTime(duration * Math.random());
+})();
+
+document.getElementById('video').addEventListener('click', async () => {
+  if (await player.getPaused()) {
+    player.play();
     document.getElementById('video-wrap').className = 'playing';
   }
   else {
-    video.pause();
+    player.pause();
     document.getElementById('video-wrap').className = '';
   }
 });
-
-video.load();
